@@ -16,12 +16,12 @@ return new class extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->string('email');
-            $table->string('birth_day');
+            $table->string('birthday');
             $table->string('phone_number');
             $table->string('trip_type');
             $table->string('departure');
             $table->string('departure_date');
-            $table->string('return_date');
+            $table->string('return_date')->nullable();
             $table->string('destination');
             $table->string('bag_count');
             $table->timestamps();

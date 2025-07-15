@@ -15,6 +15,15 @@
         </div>
         <div class="flex flex-col items-center">
             <p>Let's get started.</p>
+            @if ($errors->any())
+    <div class="text-red-500 font-bold">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
             <form class="flex flex-col items-center mt-4 w-full" method="POST" action="/reservation">
                 @csrf
                 <fieldset class="flex flex-col min-w-full">
@@ -51,12 +60,12 @@
                     <div class=" rounded-sm outline-gray-300 p-2">
                         <p>Is this a one way or a round trip?</p>
                         <div class="my-2">
-                            <input type="radio" id="round_trip" name="trip_type" value="round_trip" checked>
+                            <input type="radio" id="round_trip" name="trip_type" value="round-trip" checked>
                             <label for="round_trip">Round Trip</label>
                         </div>
                     
                         <div class="my-2">
-                            <input type="radio" id="one_way" name="trip_type" value="one_way">
+                            <input type="radio" id="one_way" name="trip_type" value="one-way">
                             <label for="one_way">One Way</label>
                         </div>
                     </div>
@@ -65,12 +74,16 @@
 
                 <fieldset class="flex flex-col my-4 items-center text-left min-w-full ">
                     <legend class="font-bold text-lg">Departure Information</legend>
-                
 
-                        <div class="flex flex-col my-4 min-w-full">
+                        <div class="flex flex-col my-2 min-w-full">
                             <label for="departure">Departure:</label>
-                            <input type="text" id="departure" name="departure" class="outline-1 rounded-sm outline-gray-300 p-2" required>
+                            <select name="departure" id="departure" class="outline-1 rounded-sm outline-gray-300 p-2" required>
+                                @foreach($destinations as $destination)
+                                    <option value="{{ $destination->name }}">{{ $destination->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
+                        
 
                         <div class="flex flex-col my-2 min-w-full">
                             <label for="departure_date">Departure Date:</label>
@@ -88,10 +101,16 @@
                     </div>
                 </fieldset>
                 
-                <div class="flex flex-col my-4 min-w-full">
-                    <label for="destination" class="place-self-start text-lg">Destination:</label>
-                    <input type="text" id="destination" name="destination" class="outline-1 rounded-sm outline-gray-300 p-2" required>
-                </div>
+                
+
+                <div class="flex flex-col my-2 min-w-full text-left">
+                            <label for="destination">Destination:</label>
+                            <select name="destination" id="destination" class="outline-1 rounded-sm outline-gray-300 p-2" required>
+                                @foreach($destinations as $destination)
+                                    <option value="{{ $destination->name }}">{{ $destination->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                 
                 <div class="flex flex-col my-4 min-w-full">
                     <label for="bag_count" class="place-self-start text-lg">Number of Bags:</label>
