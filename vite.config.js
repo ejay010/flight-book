@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import tailwindcss from '@tailwindcss/vite';
+import vueDevTools from 'vite-plugin-vue-devtools';
 
 export default defineConfig({
     plugins: [
@@ -9,5 +10,6 @@ export default defineConfig({
             refresh: true,
         }),
         tailwindcss(),
+        vueDevTools(),
     ],
 });
