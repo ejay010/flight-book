@@ -34,7 +34,7 @@
                     <div class="flex flex-col my-2 text-left">
                             <label for="departure">Departure:</label>
                             <select name="departure" id="departure" class="outline-1 rounded-sm outline-gray-300 p-2" v-model="tripInfo.departure" required>
-                                <option v-for=" destination  in routeList" :value="destination.name" :key="destination.id">
+                                <option v-for=" destination  in routeList" :value="destination.name" :key="destination.id" class="text-black">
                                     @{{ destination.name }}
                                 </option>
                             </select>
@@ -48,7 +48,7 @@
                         <div class="flex flex-col my-2 text-left">
                             <label for="destination">Destination:</label>
                             <select name="destination" id="destination" class="outline-1 rounded-sm outline-gray-300 p-2" v-model="tripInfo.destination" required>
-                                <option v-for=" destination  in routeList" :value="destination.name" :key="destination.id">
+                                <option v-for=" destination  in routeList" :value="destination.name" :key="destination.id" class="text-black">
                                     @{{ destination.name }}
                                 </option>
                             </select>
