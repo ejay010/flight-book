@@ -1,10 +1,5 @@
-<x-layout>
-    <div class="mb-6">
-            <h1 class="text-4xl font-bold">Welcome to Flight Book</h1>
-            <p>This is a simple air charter booking application</p>
-        </div>
+<x-admin-layout>
         <div class="flex flex-col items-center">
-            <p>Let's get started.</p>
             @if ($errors->any())
                 <div class="text-red-500 font-bold">
                     <ul>
@@ -58,43 +53,42 @@
                         <label for="return_date">Return Date:</label>
                         <input type="date" id="return_date" name="return_date" class="outline-1 rounded-sm outline-gray-300 p-2" :required="tripInfo.tripType === 'round-trip'" v-model="tripInfo.returnDate" >
                     </div>
-                    <button class="border rounded-md border-blue-500 text-blue-500 p-4 text-lg" id="save_tripInfo_button">Next: Passenger Information</button>
                 </fieldset>
 
                 <fieldset class="flex flex-col my-4" v-show="passengerInfoVisible" id="passenger_info">
-                    <legend class="text-2xl text-left font-bold">Passenger Information</legend>
-                    <p class="text-left">Adult seats are $160 and childern (persons under 3 years old) are $80. The limit is 9 persons per booking.</p>
-                    
+                    <legend class="text-2xl text-left font-bold">Primary Contact Information</legend>                    
                     <div class="flex flex-col my-4">
-                        <label for="first_name" class="place-self-start text-lg">Primary Contact First Name:</label>
+                        <label for="first_name" class="place-self-start text-lg">First Name:</label>
                         <input type="text" id="first_name" name="primary_contact[first_name]" class="outline-1 rounded-sm outline-gray-300 p-2" required>
                     </div>
                     
                     <div class="flex flex-col my-4">
-                        <label for="last_name" class="place-self-start text-lg">Primary Contact Last Name:</label>
+                        <label for="last_name" class="place-self-start text-lg">Last Name:</label>
                         <input type="text" id="last_name" name="primary_contact[last_name]" class="outline-1 rounded-sm outline-gray-300 p-2" required>
                     </div>
                     
                     <div class="flex flex-col my-4">
-                        <label for="email" class="place-self-start text-lg">Primary Contact Email:</label>
+                        <label for="email" class="place-self-start text-lg">Email:</label>
                         <input type="email" id="email" name="primary_contact[email]" class="outline-1 rounded-sm outline-gray-300 p-2" required>
                     </div>
                     
                     <div class="flex flex-col my-4">
-                        <label for="phone_number" class="place-self-start text-lg">Primary Contact Phone Number:</label>
+                        <label for="phone_number" class="place-self-start text-lg">Phone Number:</label>
                         <input type="tel" id="phone_number" name="primary_contact[phone_number]" class="outline-1 rounded-sm outline-gray-300 p-2" required>
                     </div>
                     
+                </fieldset>
+                <fieldset>
+                    <legend class="text-2xl text-left font-bold">Passenger Information</legend>
+                    <p class="text-left">Adult seats are $160 and childern (persons under 3 years old) are $80. The limit is 9 persons per booking.</p>
+                    <p class="text-left">Please provide details for each passenger.</p>
+                    <p class="text-left">If you are booking for a child under 3 years old, please select the "Child" option for that passenger.</p>
                     <div class="flex flex-col my-4">
                         <label for="passenger_count" class="place-self-start text-lg">Number of Passengers:</label>
                         <input type="number" id="passenger_count" name="passenger_count" min="1" max="9" class="outline-1 rounded-sm outline-gray-300 p-2" v-model="passengerCount" required>
                     </div>
-                </fieldset>
-                <fieldset>
-                    <legend class="text-2xl text-left font-bold">Passenger Details</legend>
-                    <p class="text-left">Please provide details for each passenger. The primary contact will be the first passenger.</p>
-                    <p class="text-left">If you are booking for a child under 3 years old, please select the "Child" option for that passenger.</p>
                     <div class="flex-col md:grid grid-cols-2">
+                        
                         <div v-for='n in passengerCount' :key='n' class="border-2 border-gray-300 rounded-md p-4 my-2">
                             <h3>Passenger #@{{ n }} - Details</h3>
                             <div class="flex flex-col my-4">
@@ -119,33 +113,22 @@
                                     <option value="1">Yes</option>
                                 </select>
                             </div>
-
+                            
                             <div class="flex flex-col my-4 min-w-full" v-show="bagInfoVisible" id="bag_info">
                                 <label :for="'passengers[' + n + ']' + '[bag_count]'" class="place-self-start text-lg">Number of Bags:</label>
                                 <input type="number" :id="'passengers[' + n + ']' + '[bag_count]'" :name="'passengers[' + n + ']' + '[bag_count]'" min="0" max="10" class="outline-1 rounded-sm outline-gray-300 p-2 " required>
                             </div>
+                            <p class="text-left">Each passenger is allowed 1 free checked bag. Additional bags are $35 each. All backpacks are $15. Inter Island Charters reserves the right to charge for addiontal baggage at check-in.</p>
                         </div>
                     </div>
-                    <div class="flex space-x-4 my-4">
-                    <button type="button" class="border rounded-md border-blue-500 text-blue-500 p-4 text-lg" @click="backStep">Back</button>
-                    <button type="button" class="border rounded-md border-blue-500 text-blue-500 p-4 text-lg" id="next_button" @click="nextStep">Next: Baggage Information</button>
-                    </div>
                 </fieldset>
-                <fieldset class="flex flex-col my-4" v-show="bagInfoVisible" id="bag_info">
-                    <legend class="text-2xl text-left font-bold">Baggage Information</legend>
-                    <p class="text-left">Each passenger is allowed 1 free checked bag. Additional bags are $35 each. All backpacks are $15. Inter Island Charters reserves the right to charge for addiontal baggage at check-in.</p>
-                    <div class="flex flex-col my-4">
-                        <label for="additional_checked_bags" class="place-self-start text-lg">Additional Checked Bags:</label>
-                        <input type="number" id="additional_checked_bags" name="additional_checked_bags" min="0" max="9" class="outline-1 rounded-sm outline-gray-300 p-2" value="0">
-                    </div>
-                </fieldset>
-                
                 <button type="submit" class="border-2 rounded-md my-2 p-2 font-bold text-2xl hover:bg-green-100 hover:border-green-500 hover:text-green-500 min-w-full" id="submit_button">Book Flight</button>
             </form>
         </div>
     <x-slot:scripts>
         <script>
-            Vue.createApp({
+            const { createApp } = Vue
+            createApp({
                 data() {
                     return {
                         tripInfo: {
@@ -200,12 +183,9 @@
                         this.passengerInfoVisible = false;
                         this.bagInfoVisible = false;
                     }
-                },
-                mounted() {
-                    document.getElementById('save_tripInfo_button').addEventListener('click', this.nextStep);
                 }
             }).mount('#app');
         </script>
     </x-slot>
-</x-layout>
+</x-admin-layout>
     

@@ -6,8 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>FlightBook Admin</title>
     @vite('resources/css/app.css')
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
 </head>
-<body class="flex-col bg-gray-100">
+<body class="flex-col bg-gray-100" id="app">
     <header class="flex items-center justify-between bg-gray-800 text-white p-4">
         <h2>
             <a href="{{ route('admin.home') }}" class="text-2xl font-bold">FlightBook Admin</a>
@@ -20,7 +22,7 @@
                     <a href="{{ route('admin.departures.index') }}">Departures & Destinations</a>
                 </li>
                 <li>
-                    <a href="#">Reservations</a>
+                    <a href="{{ route('admin.reservations.index') }}">Reservations</a>
                 </li>
                 <li>
                     <a href="#">Transactions</a>
@@ -43,5 +45,6 @@
     <footer>
 
     </footer>
+    {{ $scripts ?? '' }}
 </body>
 </html>

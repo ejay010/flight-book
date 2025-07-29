@@ -1,30 +1,51 @@
 <x-layout>
-    <h1>Reservation Details</h1>
-    Trip :{{ $reservation->trip_type }}
-    Departure: {{ $reservation->departure }}
-    Arrival: {{ $reservation->destination }}
-    Departure Date: {{ $reservation->departure_date }}
-    @if ($reservation->trip_type == 'round_trip')
-        Return Date: {{ $reservation->return_date }}
-    @else
-        <hr>
-    @endif
-    <h3>Primary Contact</h3>
-    Name: {{ $reservation->primary_contact->first_name }} {{ $reservation->primary_contact->last_name }}
-    Phone: {{ $reservation->primary_contact->phone_number }}
-    Email: {{ $reservation->primary_contact->email }}
-    <hr>
-    <h3>Passengers ({{ $reservation->passengers->count() }})</h3>
-    <ul>
-        @foreach ($reservation->passengers as $passenger)
-        <li>Name: {{ $passenger['first_name'] }} {{ $passenger['last_name']}}</li>
-        <li>Date of Birth: {{ $passenger['birthday'] }}</li>
-        {{-- <li>ID: {{ $passenger['document'] }} {{ $passenger['document_number'] }}</li> --}}
-        @endforeach
-    </ul>
-    <hr>
-    <h3>Baggage</h3>
-    {{ $reservation->baggageCount }} items $35 per item ${{ $reservation->baggageCount * 35 }} total
-    <h3>Pricing & Payment</h3>
-    Total Price: ${{ $reservation->totalPrice }}
+    <h1 class="text-xl m-2 font-bold">Reservation Details</h1>
+    <div class="md:grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="text-left m-4">
+            <h1 class="text-xl font-bold m-2">Flight Details</h1>
+        <span class="font-bold">Trip Type: {{ $reservation->trip_type }}</span>
+        <br><span>From: <span class="font-bold">{{ $reservation->departure }}</span></span>
+        <br><span>To: <span class="font-bold">{{ $reservation->destination }}</span></span>
+        <br><span>Departure Date: <span class="font-bold">{{ $reservation->departure_date }}</span></span>
+        @if ($reservation->trip_type == 'round_trip')
+            <li>Return Date: {{ $reservation->return_date }}</li>
+        @endif
+        </div>
+
+        <div class="m-4 text-left">
+            <h3 class="text-lg m-2 font-bold">Primary Contact</h3>
+        <p>
+        Name: {{ $reservation->primary_contact->first_name }} {{ $reservation->primary_contact->last_name }}
+        <br>Phone: {{ $reservation->primary_contact->phone_number }}
+        <br>Email: {{ $reservation->primary_contact->email }}
+        </p>
+        </div>
+
+        <div class="m-4 text-left">
+        <h3 class="text-lg m-2 font-bold">Passengers ({{ $reservation->passengers->count() }} Seat(s))</h3>
+        <div class="m-2 border rounded p-2 text-left">
+            @foreach ($reservation->passengers as $passenger)
+            <span>Name: {{ $passenger['first_name'] }} {{ $passenger['last_name']}}</span>
+            <br><span>Date of Birth: {{ $passenger['birthday'] }}</span>
+            <br><span>Bags: {{ $passenger['bag_count']}}</span>
+            <br>
+            {{-- <li>ID: {{ $passenger['document'] }} {{ $passenger['document_number'] }}</li> --}}
+            @endforeach
+        </div>
+        </div>
+
+        <div class="m-4 text-left">
+            <h3 class="text-lg font-bold">Pricing & Payment</h3>
+            <span></span>
+            <span>Total Price: ${{ $reservation->totalPrice }}</span>
+        </div>
+
+        
+    </div>
+    <div class="flex flex-col space-y-2 m-2">
+        <a href="#" class="mx-4 my-2 border border-2 rounded-sm p-4 text-lg font-bold md:tracking-2 lg:tracking-wide hover:bg-[#7eb51f] hover:text-[]">Check out</a>
+        <a href="#" class="mx-4 my-2 border border-2 rounded-sm p-4 text-lg font-bold md:tracking-2 lg:tracking-wide">Cancel Reservation</a>
+        <a href="#" class="mx-4 my-2 border border-2 rounded-sm p-4 text-lg font-bold md:tracking-2 lg:tracking-wide">Hold Reservation</a>
+    </div>
+    
 </x-layout>

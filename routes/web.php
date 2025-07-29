@@ -26,5 +26,10 @@ Route::get('/admin/departures-and-destinations/{id}/edit', [DestinationControlle
 Route::patch('/admin/departures-and-destinations/{id}', [DestinationController::class, 'update'])->name('admin.departures.update');
 Route::delete('/admin/departures-and-destinations/{id}', [DestinationController::class, 'destroy'])->name('admin.departures.delete');
 
+Route::get('/admin/reservations', [ReservationController::class, 'index'])->name('admin.reservations.index');
+Route::get('/admin/reservations/create', [ReservationController::class, 'create'])->name('admin.reservations.create');
+Route::post('/admin/reservations', [ReservationController::class, 'store'])->name('admin.reservations.store');
+Route::get('/admin/reservations/{id}', [ReservationController::class, 'view'])->name('admin.reservations.view');
+
 Route::post('/reservation', [ReservationController::class, 'store'])->name('reservation.store');
 Route::get('/reservation/{id}', [ReservationController::class, 'view'])->name('reservation.view');

@@ -9,9 +9,18 @@ use Illuminate\Support\Facades\Redis;
 
 class ReservationController extends Controller
 {
+    // Display all reservations
+    function index() {
+        // Fetch all reservations from the database
+        $reservations = Reservation::all();     
+        // Show admin.reservations.index view with reservations
+        return view('admin.reservations.index', compact('reservations'));
+    }
     //View to create a reservation
     function create() {
-
+        //show admin.reservations.create view
+        $destinations = \App\Models\Destination::all();
+        return view('admin.reservations.create', compact('destinations'));
     }
 
     // Save the model to database
