@@ -102,10 +102,9 @@ class Reservation extends Model
 
                 // Add additional costs based on trip type
                 $totalPrice = $adultCost + $childCost + $baggagePrice;
-                if ($attributes['trip_type'] === 'round_trip') {
+                if ($attributes['trip_type'] === 'round-trip') {
                      $totalPrice *= 2; // Example multiplier for round trips
                 }
-                
                 return (float) $totalPrice;
             }
         );
