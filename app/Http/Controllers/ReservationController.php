@@ -25,7 +25,6 @@ class ReservationController extends Controller
 
     // Save the model to database
     function store(StoreReservationRequest $request) {
-        
         // Create a new reservation
         $reservation = Reservation::create($request->validated());
 

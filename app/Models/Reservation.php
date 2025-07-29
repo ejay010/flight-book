@@ -21,6 +21,8 @@ class Reservation extends Model
         'confirmation',
         'payment_status',
         'reference_number',
+        'additional_checked_bags',
+        'additional_backpack',
     ];
     
     protected function casts(): array
@@ -61,23 +63,18 @@ class Reservation extends Model
         );
     }
 
-    protected function baggageCount(): Attribute
-    {
-        return Attribute::make(
-            get: function ($value, array $attributes) {
-                // get the baggage count from passengers
-                $passengers = json_decode($attributes['passengers'], true);
-                $baggageCount = 0;  
-                foreach ($passengers as $passenger) {
-                    if (isset($passenger['bag_count'])) {
-                        $baggageCount += (int) $passenger['bag_count'];
-                    }
-                }
-                // Ensure baggage count is always an integer
-                return (int) $baggageCount;
-            }
-        );
-    }
+    // protected function baggageCount(): Attribute
+    // {
+    //     return Attribute::make(
+    //         get: function ($value, array $attributes) {
+    //             // get the baggage count from passengers
+    //             $attributes['additional_checked_bags'];
+    //             $attributes['additional_backpack'];
+    //             // Ensure baggage count is always an integer
+    //             return (int) $baggageCount;
+    //         }
+    //     );
+    // }
 
     protected function totalPrice(): Attribute
     {
@@ -93,15 +90,24 @@ class Reservation extends Model
                     return $passenger['is_child'] === "1";
                 });
                 $baggageCost = 35; // Example baggage price per bag
-                $baggageCount = $this->baggageCount ?? 0;
-                $baggagePrice = $baggageCount * $baggageCost;
+                $backpackCost = 15;
+                $additionalBaggageCount = $attributes['additional_checked_bags'] ?? 0;
+                $backpackCount = $attributes['additional_backpack'] ?? 0;
+                
+                $additionalCheckedBagPrice = $additionalBaggageCount * $baggageCost;
+                $backpackPrice = $backpackCount * $backpackCost;
+
+                $baggagePrice = $backpackPrice + $additionalCheckedBagPrice;
+
                 $adultPrice = 160; // Example base price per adult passenger
                 $childPrice = 80; // Example base price per child passenger
                 $adultCost = count($adultPassengers) * $adultPrice;
                 $childCost = count($childPassengers) * $childPrice;
 
-                // Add additional costs based on trip type
+                
                 $totalPrice = $adultCost + $childCost + $baggagePrice;
+
+                // Add additional costs based on trip type
                 if ($attributes['trip_type'] === 'round-trip') {
                      $totalPrice *= 2; // Example multiplier for round trips
                 }

@@ -27,7 +27,8 @@
             @foreach ($reservation->passengers as $passenger)
             <span>Name: {{ $passenger['first_name'] }} {{ $passenger['last_name']}}</span>
             <br><span>Date of Birth: {{ $passenger['birthday'] }}</span>
-            <br><span>Bags: {{ $passenger['bag_count']}}</span>
+            <br><span>Extra Checked Bags: {{ $reservation->additional_checked_bags }}</span>
+            <br><span>Backpacks: {{ $reservation->additional_backpack }}</span>
             <br>
             {{-- <li>ID: {{ $passenger['document'] }} {{ $passenger['document_number'] }}</li> --}}
             @endforeach

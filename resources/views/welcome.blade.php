@@ -56,14 +56,12 @@
 
                         <div class="flex flex-col my-4 text-left" v-show="tripInfo.tripType === 'round-trip'">
                         <label for="return_date">Return Date:</label>
-                        <input type="date" id="return_date" name="return_date" class="outline-1 rounded-sm outline-gray-300 p-2" :required="tripInfo.tripType === 'round-trip'" v-model="tripInfo.returnDate" >
+                        <input type="date" id="return_date" name="return_date" class="outline-1 rounded-sm outline-gray-300 p-2" :required="tripInfo.tripType === 'round-trip'" v-model="tripInfo.returnDate" :min="tripInfo.departureDate" v-bind:disabled="tripInfo.tripType === 'one-way'">
                     </div>
-                    <button class="border rounded-md border-blue-500 text-blue-500 p-4 text-lg" id="save_tripInfo_button">Next: Passenger Information</button>
                 </fieldset>
 
                 <fieldset class="flex flex-col my-4" v-show="passengerInfoVisible" id="passenger_info">
-                    <legend class="text-2xl text-left font-bold">Passenger Information</legend>
-                    <p class="text-left">Adult seats are $160 and childern (persons under 3 years old) are $80. The limit is 9 persons per booking.</p>
+                    <legend class="text-2xl text-left font-bold">Contact Information</legend>
                     
                     <div class="flex flex-col my-4">
                         <label for="first_name" class="place-self-start text-lg">Primary Contact First Name:</label>
@@ -85,17 +83,18 @@
                         <input type="tel" id="phone_number" name="primary_contact[phone_number]" class="outline-1 rounded-sm outline-gray-300 p-2" required>
                     </div>
                     
+                </fieldset>
+                <fieldset>
+                    <legend class="text-2xl text-left font-bold">Passenger Details</legend>
+                    <p class="text-left">Adult seats are $160 and childern (persons under 3 years old) are $80. The limit is 9 persons per booking.</p>
+                    <p class="text-left">Please provide details for each passenger.</p>
+                    <p class="text-left">If you are booking for a child under 3 years old, please select the "Child" option for that passenger.</p>
                     <div class="flex flex-col my-4">
                         <label for="passenger_count" class="place-self-start text-lg">Number of Passengers:</label>
                         <input type="number" id="passenger_count" name="passenger_count" min="1" max="9" class="outline-1 rounded-sm outline-gray-300 p-2" v-model="passengerCount" required>
                     </div>
-                </fieldset>
-                <fieldset>
-                    <legend class="text-2xl text-left font-bold">Passenger Details</legend>
-                    <p class="text-left">Please provide details for each passenger. The primary contact will be the first passenger.</p>
-                    <p class="text-left">If you are booking for a child under 3 years old, please select the "Child" option for that passenger.</p>
                     <div class="flex-col md:grid grid-cols-2">
-                        <div v-for='n in passengerCount' :key='n' class="border-2 border-gray-300 rounded-md p-4 my-2">
+                        <div v-for='n in passengerCount' :key='n' class="border-2 border-gray-300 rounded-md p-4 m-2">
                             <h3>Passenger #@{{ n }} - Details</h3>
                             <div class="flex flex-col my-4">
                                 <label :for="'passengers[' + n + ']' + '[first_name]'"  class="place-self-start text-lg">First Name:</label>
@@ -120,26 +119,34 @@
                                 </select>
                             </div>
 
-                            <div class="flex flex-col my-4 min-w-full" v-show="bagInfoVisible" id="bag_info">
+                            {{-- <div class="flex flex-col my-4 min-w-full" v-show="bagInfoVisible" id="bag_info">
                                 <label :for="'passengers[' + n + ']' + '[bag_count]'" class="place-self-start text-lg">Number of Bags:</label>
                                 <input type="number" :id="'passengers[' + n + ']' + '[bag_count]'" :name="'passengers[' + n + ']' + '[bag_count]'" min="0" max="10" class="outline-1 rounded-sm outline-gray-300 p-2 " required>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
-                    <div class="flex space-x-4 my-4">
-                    <button type="button" class="border rounded-md border-blue-500 text-blue-500 p-4 text-lg" @click="backStep">Back</button>
-                    <button type="button" class="border rounded-md border-blue-500 text-blue-500 p-4 text-lg" id="next_button" @click="nextStep">Next: Baggage Information</button>
-                    </div>
+                    
                 </fieldset>
                 <fieldset class="flex flex-col my-4" v-show="bagInfoVisible" id="bag_info">
                     <legend class="text-2xl text-left font-bold">Baggage Information</legend>
-                    <p class="text-left">Each passenger is allowed 1 free checked bag. Additional bags are $35 each. All backpacks are $15. Inter Island Charters reserves the right to charge for addiontal baggage at check-in.</p>
-                    <div class="flex flex-col my-4">
-                        <label for="additional_checked_bags" class="place-self-start text-lg">Additional Checked Bags:</label>
-                        <input type="number" id="additional_checked_bags" name="additional_checked_bags" min="0" max="9" class="outline-1 rounded-sm outline-gray-300 p-2" value="0">
+                    <p class="text-left">Each passenger is allowed 1 free checked bag. Additional bags are $35 each. All backpacks are $15. Inter Island Charters reserves the right to charge for addiontal baggage at check-in. Oversized or overweight (50lbs or more) bags are $25.</p>
+                    <div class="flex space-x-3">
+                        <div class="flex flex-col my-4 w-1/2">
+                        <label for="additional_checked_bags" class="place-self-start text-lg">Additional Checked Bags: @{{ additionalBag }}</label>
+                        <input type="hidden" name="additional_checked_bags" value="0" id="additional_checked_bags" v-model="additionalBag">
+                        <button type="button" class="border-2 rounded-md my-2 p-4 font-bold text-2xl hover:bg-[#0ea8c1] hover:text-gray-800" @click="addCheckedBag">Add an Extra Bag</button>
+                        <button type="button" v-show="additionalBag > 0" class="border-2 rounded-md my-2 p-4 font-bold text-2xl hover:bg-[#0ea8c1] hover:text-gray-800" @click="removeCheckedBag">Remove a Bag</button>
                     </div>
-                </fieldset>
-                
+                    <div class="flex flex-col my-4 w-1/2">
+                        <label for="additional_backpacks" class="place-self-start text-lg">Backpacks: @{{ additionalBackpack }}</label>
+                        <input type="hidden" name="additional_backpack" value="0" id="additional_backpack" v-model="additionalBackpack">
+                        <button type="button" class="border-2 rounded-md my-2 p-4 font-bold text-2xl hover:bg-[#0ea8c1] hover:text-gray-800" @click="addBackpack">Add a Backpack</button>
+                        <button v-show="additionalBackpack > 0" type="button" class="border-2 rounded-md my-2 p-4 font-bold text-2xl hover:bg-[#0ea8c1] hover:text-gray-800" @click="removeBackpack">Remove a Backpack</button>
+                    </div>
+                    </div>
+                    
+                </fieldset>                       
+
                 <button type="submit" class="border-2 rounded-md my-2 p-2 font-bold text-2xl hover:bg-green-100 hover:border-green-500 hover:text-green-500 min-w-full" id="submit_button">Book Flight</button>
             </form>
         </div>
@@ -156,6 +163,8 @@
                             returnDate: ''
                         },
                         passengerCount: 1,
+                        additionalBag: 0,
+                        additionalBackpack: 0,
                         tripInfoVisible: true,
                         passengerInfoVisible: true,
                         bagInfoVisible: true,
@@ -186,24 +195,19 @@
                             }
                         }
                     },
-
-                    nextStep() {
-                        if (this.tripType === 'round-trip') {
-                            this.passengerInfoVisible = true;
-                            this.bagInfoVisible = true;
-                        } else {
-                            this.passengerInfoVisible = true;
-                            this.bagInfoVisible = false;
-                        }
+                    addCheckedBag() {
+                        this.additionalBag += 1
                     },
-                    backStep() {
-                        this.passengerInfoVisible = false;
-                        this.bagInfoVisible = false;
-                    }
+                    addBackpack() { 
+                        this.additionalBackpack += 1
+                    },
+                    removeCheckedBag() {
+                        this.additionalBag -= 1
+                    },
+                    removeBackpack() {
+                        this.additionalBackpack -= 1
+                    },
                 },
-                mounted() {
-                    document.getElementById('save_tripInfo_button').addEventListener('click', this.nextStep);
-                }
             }).mount('#app');
         </script>
     </x-slot>
