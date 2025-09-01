@@ -12,7 +12,7 @@ class ReservationController extends Controller
     // Display all reservations
     function index() {
         // Fetch all reservations from the database
-        $reservations = Reservation::all();     
+        $reservations = Reservation::all();
         // Show admin.reservations.index view with reservations
         return view('admin.reservations.index', compact('reservations'));
     }
@@ -26,7 +26,13 @@ class ReservationController extends Controller
     // Save the model to database
     function store(StoreReservationRequest $request) {
         // Create a new reservation
-        $reservation = Reservation::create($request->validated());
+        $lastReservation = Reservation::latest()->first();
+        $lastId = $lastReservation ? intval(substr($lastReservation->reference_number, 4)) : 0;
+        $newId = $lastId + 1;
+        $referenceNumber = 'IIC-' . str_pad($newId, 3, '0', STR_PAD_LEFT);
+
+        $request->merge(['reference_number' => $referenceNumber]);
+        $reservation = Reservation::create($request->all());
 
         // Redirect or return a response
         return redirect()->route('reservation.view', ['id' => $reservation->id])
@@ -43,7 +49,7 @@ class ReservationController extends Controller
     }
 
     function update() {
-        
+
     }
 
     function delete() {

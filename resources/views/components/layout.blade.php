@@ -30,7 +30,7 @@
             </ul>
         </nav>
     </header>
-    <main class="flex flex-col mx-auto text-center p-6 bg-[#19232d]" id="app">
+    <main class="flex flex-col mx-auto text-center px-6 md:px-24 py-12 bg-[#19232d]" id="app">
         {{ $slot }}
     </main>
     {{ $scripts ?? '' }}

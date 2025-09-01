@@ -147,7 +147,7 @@
                     
                 </fieldset>                       
 
-                <button type="submit" class="border-2 rounded-md my-2 p-2 font-bold text-2xl hover:bg-green-100 hover:border-green-500 hover:text-green-500 min-w-full" id="submit_button">Book Flight</button>
+                <button type="submit" class="border-2 rounded-md my-2 p-2 font-bold text-2xl hover:bg-green-100 hover:border-green-500 hover:text-green-500 min-w-full" id="submit_button">Create Reservation</button>
             </form>
         </div>
     <x-slot:scripts>

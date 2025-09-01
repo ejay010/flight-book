@@ -30,6 +30,8 @@ Route::get('/admin/reservations', [ReservationController::class, 'index'])->name
 Route::get('/admin/reservations/create', [ReservationController::class, 'create'])->name('admin.reservations.create');
 Route::post('/admin/reservations', [ReservationController::class, 'store'])->name('admin.reservations.store');
 Route::get('/admin/reservations/{id}', [ReservationController::class, 'view'])->name('admin.reservations.view');
+Route::get('/admin/reservations/{id}/edit', [ReservationController::class, 'edit'])->name('admin.reservations.edit');
 
+//Customer Facing routes
 Route::post('/reservation', [ReservationController::class, 'store'])->name('reservation.store');
 Route::get('/reservation/{id}', [ReservationController::class, 'view'])->name('reservation.view');

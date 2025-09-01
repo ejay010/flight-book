@@ -1,5 +1,7 @@
 <x-layout>
     <h1 class="text-xl m-2 font-bold">Reservation Details</h1>
+    <h2 class="text-lg font-bold">Code: {{ $reservation->reference_number }}</h2>
+    <h2 class="text-lg font-bold">Confirmation: {{ $reservation->confirmation }}</h2>
     <div class="md:grid grid-cols-1 md:grid-cols-2 gap-4">
         <div class="text-left m-4">
             <h1 class="text-xl font-bold m-2">Flight Details</h1>
@@ -41,12 +43,11 @@
             <span>Total Price: ${{ $reservation->totalPrice }}</span>
         </div>
 
-        
+
     </div>
-    <div class="flex flex-col space-y-2 m-2">
-        <a href="#" class="mx-4 my-2 border border-2 rounded-sm p-4 text-lg font-bold md:tracking-2 lg:tracking-wide hover:bg-[#7eb51f] hover:text-[]">Check out</a>
+    {{-- <div class="flex flex-col space-y-2 m-2">
+        <a href="{{ route('reservation.store') }}" class="mx-4 my-2 border border-2 rounded-sm p-4 text-lg font-bold md:tracking-2 lg:tracking-wide hover:bg-[#7eb51f] hover:text-white">Create reservation</a>
         <a href="#" class="mx-4 my-2 border border-2 rounded-sm p-4 text-lg font-bold md:tracking-2 lg:tracking-wide">Cancel Reservation</a>
-        <a href="#" class="mx-4 my-2 border border-2 rounded-sm p-4 text-lg font-bold md:tracking-2 lg:tracking-wide">Hold Reservation</a>
-    </div>
-    
+    </div> --}}
+
 </x-layout>

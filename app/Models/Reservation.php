@@ -33,16 +33,6 @@ class Reservation extends Model
         ];
     }
 
-    protected function referenceNumber(): Attribute
-    {
-        return Attribute::make(
-            set: function (string $value) {
-                // Generate a unique reference number
-                return uniqid('IIC-');
-            }
-        );
-    }
-
     protected function primaryContact(): Attribute
     {
         return Attribute::make(

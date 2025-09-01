@@ -24,6 +24,7 @@ class StoreReservationRequest extends FormRequest
         return [
             //
             'trip_type' => 'required|string|in:one-way,round-trip',
+            // 'reference_number' => 'required|string|unique:reservations,reference_number',
             'primary_contact.first_name' => 'required|string|max:255',
             'primary_contact.last_name' => 'required|string|max:255',
             'primary_contact.email' => 'required|email|max:255',
