@@ -21,7 +21,7 @@
                 @foreach($reservations as $reservation)
                     <tr>
                         <td class="border px-4 py-2">
-                            <a href="{{ route('reservation.view', $reservation->id) }}" class="text-blue-500 hover:underline">
+                            <a href="{{ route('admin.reservations.view', $reservation->id) }}" class="text-blue-500 hover:underline">
                             {{ $reservation->reference_number }}
                             </a>
                         </td>

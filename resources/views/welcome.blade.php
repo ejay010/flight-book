@@ -25,7 +25,7 @@
                             <input type="radio" id="round_trip" name="trip_type" value="round-trip" v-model="tripInfo.tripType" checked>
                             <label for="round_trip">Round Trip</label>
                         </div>
-                    
+
                         <div class="">
                             <input type="radio" id="one_way" name="trip_type" value="one-way" v-model="tripInfo.tripType">
                             <label for="one_way">One Way</label>
@@ -39,7 +39,7 @@
                                 </option>
                             </select>
                         </div>
-                        
+
                         <div class="flex flex-col my-2 text-left">
                             <label for="departure_date">Departure Date:</label>
                             <input v-model="tripInfo.departureDate" type="date" id="departure_date" name="departure_date" class="outline-1 rounded-sm outline-gray-300 p-2" :min="today" required>
@@ -62,27 +62,28 @@
 
                 <fieldset class="flex flex-col my-4" v-show="passengerInfoVisible" id="passenger_info">
                     <legend class="text-2xl text-left font-bold">Contact Information</legend>
-                    
-                    <div class="flex flex-col my-4">
-                        <label for="first_name" class="place-self-start text-lg">Primary Contact First Name:</label>
-                        <input type="text" id="first_name" name="primary_contact[first_name]" class="outline-1 rounded-sm outline-gray-300 p-2" required>
-                    </div>
-                    
+
+                    <x-form-field>
+                        <x-form-label for="first_name">Primary Contact First Name:</x-form-label>
+                        <x-form-input id="first_name" name="primary_contact[first_name]" required></x-form-input>
+                        <x-form-error name="first_name"/>
+                    </x-form-field>
+
                     <div class="flex flex-col my-4">
                         <label for="last_name" class="place-self-start text-lg">Primary Contact Last Name:</label>
                         <input type="text" id="last_name" name="primary_contact[last_name]" class="outline-1 rounded-sm outline-gray-300 p-2" required>
                     </div>
-                    
+
                     <div class="flex flex-col my-4">
                         <label for="email" class="place-self-start text-lg">Primary Contact Email:</label>
                         <input type="email" id="email" name="primary_contact[email]" class="outline-1 rounded-sm outline-gray-300 p-2" required>
                     </div>
-                    
+
                     <div class="flex flex-col my-4">
                         <label for="phone_number" class="place-self-start text-lg">Primary Contact Phone Number:</label>
                         <input type="tel" id="phone_number" name="primary_contact[phone_number]" class="outline-1 rounded-sm outline-gray-300 p-2" required>
                     </div>
-                    
+
                 </fieldset>
                 <fieldset>
                     <legend class="text-2xl text-left font-bold">Passenger Details</legend>
@@ -100,12 +101,12 @@
                                 <label :for="'passengers[' + n + ']' + '[first_name]'"  class="place-self-start text-lg">First Name:</label>
                                 <input class="outline-1 rounded-sm outline-gray-300 p-2" type="text" :id="'passengers[' + n + ']' + '[first_name]'" :name="'passengers[' + n + ']' + '[first_name]'" required>
                             </div>
-                    
+
                             <div class="flex flex-col my-4">
                                 <label :for="'passengers[' + n + ']' + '[last_name]'" class="place-self-start text-lg">Last Name:</label>
                                 <input type="text" :id="'passengers[' + n + ']' + '[last_name]'" :name="'passengers[' + n + ']' + '[last_name]'" class="outline-1 rounded-sm outline-gray-300 p-2" required>
                             </div>
-                    
+
                             <div class="flex flex-col my-4">
                                 <label :for="'passengers[' + n + ']' + '[birthday]'" class="place-self-start text-lg">Birth Day:</label>
                                 <input type="date" :id="'passengers[' + n + ']' + '[birthday]'" :name="'passengers[' + n + ']' + '[birthday]'" class="outline-1 rounded-sm outline-gray-300 p-2" required>
@@ -125,7 +126,7 @@
                             </div> --}}
                         </div>
                     </div>
-                    
+
                 </fieldset>
                 <fieldset class="flex flex-col my-4" v-show="bagInfoVisible" id="bag_info">
                     <legend class="text-2xl text-left font-bold">Baggage Information</legend>
@@ -144,8 +145,8 @@
                         <button v-show="additionalBackpack > 0" type="button" class="border-2 rounded-md my-2 p-4 font-bold text-2xl hover:bg-[#0ea8c1] hover:text-gray-800" @click="removeBackpack">Remove a Backpack</button>
                     </div>
                     </div>
-                    
-                </fieldset>                       
+
+                </fieldset>
 
                 <button type="submit" class="border-2 rounded-md my-2 p-2 font-bold text-2xl hover:bg-green-100 hover:border-green-500 hover:text-green-500 min-w-full" id="submit_button">Create Reservation</button>
             </form>
@@ -191,14 +192,14 @@
                     checkTripInfo() {
                         if (tripInfo.departure != '' || null) {
                             if (tripInfo.departureDate != '' || null) {
-                            
+
                             }
                         }
                     },
                     addCheckedBag() {
                         this.additionalBag += 1
                     },
-                    addBackpack() { 
+                    addBackpack() {
                         this.additionalBackpack += 1
                     },
                     removeCheckedBag() {
@@ -212,4 +213,4 @@
         </script>
     </x-slot>
 </x-layout>
-    
+

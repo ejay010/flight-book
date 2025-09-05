@@ -48,6 +48,10 @@ class ReservationController extends Controller
         ]);
     }
 
+    function edit() {
+
+    }
+
     function update() {
 
     }
