@@ -48,15 +48,13 @@ class ReservationController extends Controller
         ]);
     }
 
-    function edit() {
+    function update(Reservation $id, StoreReservationRequest $request) {
+        $reservation = $id;
+        $reservation->update($request->all());
+        return redirect()->route('admin.reservations.view', ['id' => $reservation->id])
+                         ->with('success', 'Reservation updated successfully!');
 
     }
 
-    function update() {
 
-    }
-
-    function delete() {
-
-    }
 }
