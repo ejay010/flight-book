@@ -77,6 +77,12 @@ class AdminController extends Controller
 
     }
 
+    // Show the view to add passenger information
+    function addPassenger(Reservation $id) {
+        $reservation = $id;
+        return view('admin.reservations.passenger.create', compact(['reservation']));
+    }
+
     function invoiceAndSendReservation(Reservation $id) {
         //get the reservation
         $reservation = $id;
@@ -88,5 +94,25 @@ class AdminController extends Controller
         //create invoice
         //send customer invoice with payment link
         //notify admin that invoice was sent
+    }
+
+    function savePassenger(Reservation $id, Request $request) {
+        //validate request
+        $validated = $request->validate([
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'birthday' => 'required',
+            'is_child' => 'required'
+        ]);
+
+        // retrieve reservation
+        $reservation = $id;
+
+        // update passenger list
+        $newManifest = $reservation->passengers->push($validated);
+        $reservation->update(['passengers' => $newManifest]);
+
+        // redirect to reservation
+        return redirect()->to(route('admin.reservations.edit', $reservation->id));
     }
 }

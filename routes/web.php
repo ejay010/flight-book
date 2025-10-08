@@ -62,6 +62,8 @@ Route::get('/admin/reservations/{id}', [AdminController::class, 'viewReservation
 Route::get('/admin/reservations/{id}/edit', [AdminController::class, 'editReservation'])->name('admin.reservations.edit');
 Route::patch('/admin/reservations/{id}/edit', [AdminController::class, 'updateReservation'])->name('admin.reservations.update');
 Route::post('/admin/reservations/{id}/invoice/send', [AdminController::class, 'invoiceAndSendReservation'])->name('admin.reservations.confirmAndInvoice');
+Route::get('/admin/reservation/{id}/passenger/add', [AdminController::class, 'addPassenger'])->name('admin.reservations.passengers.create');
+Route::post('/admin/reservation/{id}/passenger/store', [AdminController::class, 'savePassenger'])->name('admin.reservations.passengers.store');
 
 // Admin Transactions routes
 Route::get('/admin/transactions', [TransactionsController::class, 'index'])->name('admin.transactions.index');

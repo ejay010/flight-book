@@ -1,1 +1,2 @@
-<label >{{ $slot }}</label>
+@props(['for'])
+<label for={{ $for }}> {{ $slot }} </label>
