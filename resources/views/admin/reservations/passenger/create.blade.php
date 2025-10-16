@@ -42,8 +42,9 @@
                     </select>
                 </x-form-field>
 
-                <div class="flex justify-end">
-                    <button type="submit" class="border hover:outline-2 outline-offset-1 outline-blue-600 p-2 rounded">Save Passenger</button>
+                <div class="flex flex-col space-y-3 sm:flex-row justify-between ">
+                    <x-button type="link" href="{{ route('admin.reservations.edit', $reservation->id) }}">Cancel</x-button>
+                    <x-button type="submit">Save Passenger</x-button>
                 </div>
 
             </form>

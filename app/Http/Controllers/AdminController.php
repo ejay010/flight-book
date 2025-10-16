@@ -55,7 +55,7 @@ class AdminController extends Controller
         ]);
     }
 
-        function editReservation(Reservation $id) {
+    function editReservation(Reservation $id) {
         $reservation = $id;
         $destinations = \App\Models\Destination::all();
         return view('admin.reservations.edit', compact('reservation', 'destinations'));
@@ -63,6 +63,7 @@ class AdminController extends Controller
 
     function updateReservation(Reservation $id, Request $request) {
         $reservation = $id;
+
         $reservation->update($request->all());
         return redirect()->route('admin.reservations.view', ['id' => $reservation->id])
                          ->with('success', 'Reservation updated successfully!');
@@ -114,5 +115,24 @@ class AdminController extends Controller
 
         // redirect to reservation
         return redirect()->to(route('admin.reservations.edit', $reservation->id));
+    }
+
+    function removePassenger(Reservation $id, $index) {
+        $reservation = $id;
+
+        $passengers = $reservation->passengers;
+
+        $passengers->pull($index);
+
+        $reservation->update(['passengers' => $passengers]);
+
+        return redirect()->to(route('admin.reservations.edit', $reservation->id));
+    }
+
+    function editPassenger(Reservation $id, $index) {
+        $reservation = $id;
+        $passenger = $reservation->passengers->get($index);
+
+        return view('admin.reservations.passenger.edit', compact(['passenger', 'reservation', 'index']));
     }
 }

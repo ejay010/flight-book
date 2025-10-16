@@ -3,7 +3,9 @@
         <h1>Edit Reservation #{{ $reservation->reference_number }} </h1>
         <hr>
 
-        <form method="POST" action="#">
+        <form method="POST" action="{{ route('admin.reservations.update', $reservation->id) }}">
+            @method('PATCH')
+            @csrf
             <fieldset class="flex flex-col my-4" id="trip_info" v-show="tripInfoVisible">
                 <legend class="font-bold text-2xl">Trip Information</legend>
                 <div class="flex space-x-2 rounded-sm outline-gray-300 p-2 text-left">
@@ -105,46 +107,48 @@
 
                     <a href="{{ route('admin.reservations.passengers.create', $reservation->id) }}" type="button"  class="border p-1 rounded shadow-md hover:border-blue-500 hover:text-blue-500 hover:outline">Add Passenger</a>
                     <div class="flex-col md:grid grid-cols-2">
-                        @foreach($reservation->passengers->toArray() as  $passenger)
+                        @foreach($reservation->passengers->toArray() as $key => $passenger)
                             <div class="border-2 border-gray-300 rounded-md p-4 m-2">
                                 <h3>Passenger #{{ $loop->index + 1 }} - Details</h3>
                                 <div class="flex flex-col my-4">
-                                    <label for="{{$passenger['first_name']}}" class="place-self-start text-lg">First
+                                    <label for="passengers[{{ $key }}][first_name]" class="place-self-start text-lg">First
                                         Name:</label>
                                     <input class="outline-1 rounded-sm outline-gray-300 p-2" type="text"
-                                        id="{{$passenger['first_name']}}" name="{{$passenger['first_name']}}"
-                                        value="{{ $passenger['first_name'] }}" required>
+                                        id="passengers[{{ $key }}][first_name]" name="passengers[{{ $key }}][first_name]"
+                                        value="{{ $passenger["first_name"] }}" required>
                                 </div>
 
                                 <div class="flex flex-col my-4">
-                                    <label for="{{ $passenger['last_name'] }}" class="place-self-start text-lg">Last
+                                    <label for="passengers[{{ $key }}][last_name]" class="place-self-start text-lg">Last
                                         Name:</label>
-                                    <input type="text" id="{{ $passenger['last_name'] }}" name="{{ $passenger['last_name'] }}"
-                                        value="{{ $passenger['last_name'] }}"
+                                    <input type="text" id="passengers[{{ $key }}][last_name]" name="passengers[{{ $key }}][last_name]"
+                                        value="{{ $passenger["last_name"] }}"
                                         class="outline-1 rounded-sm outline-gray-300 p-2" required>
                                 </div>
 
                                 <div class="flex flex-col my-4">
-                                    <label for="{{ 'passenger' . $loop->index + 1 . '-birthday'  }}" class="place-self-start text-lg">Birth
+                                    <label for="passengers[{{ $key }}][birthday]" class="place-self-start text-lg">Birth
                                         Day:</label>
-                                    <input type="date" id="{{ 'passenger' . $loop->index + 1 . '-birthday'  }}" name="{{ 'passenger[' . $loop->index + 1 . '].birthday'  }}"
-                                        value="{{ $passenger['birthday'] }}"
+                                    <input type="date" id="passengers[{{ $key }}][birthday]" name="passengers[{{ $key }}][birthday]"
+                                        value="{{ $passenger["birthday"] }}"
                                         class="outline-1 rounded-sm outline-gray-300 p-2" required>
                                 </div>
 
                                 <div class="flex flex-col my-4">
-                                    <label for="passengers[{{ $loop->index + 1 }}].is_child" class="place-self-start text-lg">Is Child
+                                    <label for="passengers[{{ $key }}][is_child]" class="place-self-start text-lg">Is Child
                                         (under 3 years old):</label>
-                                    <select id="passengers[{{ $loop->index + 1 }}].is_child" name="passengers[{{ $loop->index + 1 }}].is_child"
-                                        value="{{ $passenger['is_child'] }}"
+                                    <select id="passengers[{{ $key }}][is_child]" name="passengers[{{ $key }}][is_child]"
+                                        value="{{ $passenger["is_child"] }}"
                                         class="outline-1 rounded-sm outline-gray-300 p-2" required>
                                         <option value="0">No</option>
                                         <option value="1">Yes</option>
                                     </select>
                                 </div>
+                                <div class="flex flex-col md:flex-row">
 
-                                <button>Save Changes</button>
-                                <button>Remove Passenger</button>
+                                <x-button type="link" href="{{ route('admin.reservation.passenger.edit', ['id' => $reservation->id, 'index' => $key]) }}">Edit Passenger</x-button>
+                                <x-button type="link" href="{{ route('admin.reservation.passenger.remove', ['id' => $reservation->id, 'index' => $key]) }}">Remove Passenger</x-button>
+                                </div>
                             </div>
 
                         @endforeach
@@ -161,92 +165,42 @@
                     <div class="flex flex-col my-4 w-1/2">
                         <label for="additional_checked_bags" class="place-self-start text-lg">Checked Bags:
                             {{ $reservation->additional_checked_bags }}</label>
-                        <button type="button"
-                            class="border-2 rounded-md my-2 p-4 font-bold text-2xl hover:bg-[#0ea8c1] hover:text-gray-800"
-                            @click="addCheckedBag">Add an Extra Bag</button>
-                        <button type="button" v-show="additionalBag > 0"
-                            class="border-2 rounded-md my-2 p-4 font-bold text-2xl hover:bg-[#0ea8c1] hover:text-gray-800"
-                            @click="removeCheckedBag">Remove a Bag</button>
+                            <input class="outline-1 rounded-sm outline-gray-300 p-2" type="number" id="additional_checked_bags" name="additional_checked_bags" value="{{ $reservation->additional_checked_bags }}">
                     </div>
                     <div class="flex flex-col my-4 w-1/2">
                         <label for="additional_backpacks" class="place-self-start text-lg">Backpacks:
                             {{ $reservation->additional_backpack }}</label>
-                        <button type="button"
-                            class="border-2 rounded-md my-2 p-4 font-bold text-2xl hover:bg-[#0ea8c1] hover:text-gray-800"
-                            @click="addBackpack">Add a Backpack</button>
-                        <button v-show="additionalBackpack > 0" type="button"
-                            class="border-2 rounded-md my-2 p-4 font-bold text-2xl hover:bg-[#0ea8c1] hover:text-gray-800"
-                            @click="removeBackpack">Remove a Backpack</button>
+                            <input class="outline-1 rounded-sm outline-gray-300 p-2" type="number" id="additional_backpacks" name="additional_backpacks" value="{{ $reservation->additional_backpack }}">
                     </div>
                 </div>
 
             </fieldset>
-            <button type="submit">Save Changes</button>
+            <fieldset>
+                <x-form-field>
+                    <x-form-label for="payment_status">Payment Status</x-form-label>
+                    <select id="payment_status" name="payment_status" class="outline-1 rounded-sm outline-gray-300 p-2">
+                        <option value="Paid" {{ $reservation->payment_status == 'Paid' ? 'selected' : '' }}>Paid</option>
+                        <option value="Not_Paid" {{ $reservation->payment_status == 'Not_Paid' ? 'selected' : '' }}>Not Paid</option>
+                        <option value="Processing" {{ $reservation->payment_status == 'Processing' ? 'selected' : '' }}>Processing</option>
+                    </select>
+                </x-form-field>
+            </fieldset>
+
+            <fieldset>
+                <x-form-field>
+                    <x-form-label for="confirmation">Flight Confirmation Status</x-form-label>
+                    <select id="confirmation" name="confirmation" class="outline-1 rounded-sm outline-gray-300 p-2">
+                        <option value="Confirmed" {{ $reservation->payment_status == 'Confirmed' ? 'selected' : '' }}>Confirmed</option>
+                        <option value="Pending Review" {{ $reservation->payment_status == 'Pending_Review' ? 'selected' : '' }}>Pending Review</option>
+                        <option value="Processing" {{ $reservation->payment_status == 'Processing' ? 'selected' : '' }}>Processing</option>
+                        <option value="Cancelled" {{ $reservation->payment_status == 'Cancelled' ? 'selected' : '' }}>Cancelled</option>
+                    </select>
+                </x-form-field>
+            </fieldset>
+
+
+
+            <x-button type="submit">Save Changes</x-button>
         </form>
-        <x-slot:scripts>
-
-            <script>
-                // Vue.createApp({
-                //     data() {
-                //         return {
-                //             tripInfo: {
-                //                 tripType: {{ Js::from($reservation->trip_type) }},
-                //                 departure: {{ Js::from($reservation->departure) }},
-                //                 departureDate: {{ Js::from($reservation->departure_date) }},
-                //                 destination: {{ Js::from($reservation->destination) }},
-                //                 returnDate: {{ Js::from($reservation->return_date) }}
-                //             },
-                //             passengerCount: {{ Js::from($reservation->passenger_count) }},
-                //             passengers: {{ Js::from($reservation->passengers) }},
-                //             primaryContact: {{ Js::from($reservation->primary_contact) }},
-                //             additionalBag: 0,
-                //             additionalBackpack: 0,
-                //             tripInfoVisible: true,
-                //             passengerInfoVisible: true,
-                //             bagInfoVisible: true,
-                //             routeList: {{ Js::from($destinations->toArray()) }}
-                //         };
-                //     },
-                //     computed: {
-                //         today() {
-                //             let currentdate = new Date();
-                //             let day = currentdate.getDate();
-                //             let month = currentdate.getMonth();
-                //             let year = currentdate.getFullYear();
-                //             if (day < 10) {
-                //                 day = '0' + day
-                //             }
-                //             if (month < 10){
-                //                 month = '0' + month
-                //             }
-                //             let dateString = year +'-'+ month +'-'+ day;
-                //             return dateString
-                //         }
-                //     },
-                //     methods: {
-                //         checkTripInfo() {
-                //             if (tripInfo.departure != '' || null) {
-                //                 if (tripInfo.departureDate != '' || null) {
-
-                //                 }
-                //             }
-                //         },
-                //         addCheckedBag() {
-                //             this.additionalBag += 1
-                //         },
-                //         addBackpack() {
-                //             this.additionalBackpack += 1
-                //         },
-                //         removeCheckedBag() {
-                //             this.additionalBag -= 1
-                //         },
-                //         removeBackpack() {
-                //             this.additionalBackpack -= 1
-                //         },
-                //     },
-                // }).mount('#app');
-
-            </script>
-            </x-slot>
     </div>
 </x-admin-layout>
