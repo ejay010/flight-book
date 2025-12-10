@@ -5,11 +5,10 @@ import vueDevTools from 'vite-plugin-vue-devtools';
 
 export default defineConfig({
     plugins: [
-        laravel({
-            input: ['resources/css/app.css', 'resources/js/app.js'],
-            refresh: true,
-        }),
         tailwindcss(),
-        vueDevTools(),
+        laravel([
+            'resources/css/app.css',
+            'resources/js/app.js',
+        ])
     ],
 });

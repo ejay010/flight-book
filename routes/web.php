@@ -82,3 +82,6 @@ Route::get('/admin/settings', [AdminController::class, 'settings'])->name('admin
 //Customer Facing routes
 Route::post('/reservation', [ReservationController::class, 'store'])->name('reservation.store');
 Route::get('/reservation/{id}', [ReservationController::class, 'view'])->name('reservation.view');
+
+
+Route::get('/admin/invoices', [AdminController::class, 'invoices'])->name('admin.invoices.index');
