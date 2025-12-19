@@ -13,17 +13,13 @@ return new class extends Migration
     {
         Schema::create('reservations', function (Blueprint $table) {
             $table->id();
-            $table->string('trip_type');
-            $table->string('departure');
-            $table->string('departure_date');
-            $table->string('return_date')->nullable();
-            $table->string('destination');
-            $table->integer('passenger_count');
-            $table->json('primary_contact'); // Storing primary contact as JSON
-            $table->json('passengers'); // Storing passengers as JSON
-            $table->string('payment_status')->default('unpaid'); // Adding status field with default value
-            $table->string('confirmation')->default('pending'); // Adding status field with default value
-            $table->string('reference_number')->unique(); // Adding reference number field with unique constraint
+            $table->string('contact_first_name');
+            $table->string('contact_last_name');
+            $table->string('contact_email');
+            $table->string('contact_phone_number');
+            $table->string('reference_number')->nullable();
+            $table->boolean('round_trip');
+            $table->string('status')->default('Pending Confirmation');
             $table->timestamps();
         });
     }
